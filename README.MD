@@ -22,6 +22,7 @@ recipient_email ="example@hello.com"
 recipient_name = "example"
 sendgrid_apikey = "blahdeblah"
 how_many_failures_before_send_email = 3
+seconds_between_checks = 3600
 ```
 
 Then just `cargo run`. 

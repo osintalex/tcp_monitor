@@ -15,6 +15,7 @@ pub struct MonitorConfig {
     pub sender_name: String,
     pub recipient_email: String,
     pub recipient_name: String,
+    pub seconds_between_checks: u64,
     pub sendgrid_apikey: String,
     how_many_failures_before_send_email: u8,
 }

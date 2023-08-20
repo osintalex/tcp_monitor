@@ -18,10 +18,10 @@ struct Message {
 pub fn send_alert_email(
     ipv4_flag: bool,
     ipv6_flag: bool,
-    configuration: MonitorConfig,
+    configuration: &MonitorConfig,
 ) -> Result<(), Error> {
     log::warn!("Sending an alert email...");
-    let payload = make_email_payload(&configuration, ipv4_flag, ipv6_flag);
+    let payload = make_email_payload(configuration, ipv4_flag, ipv6_flag);
     let api_key: &str = &configuration.sendgrid_apikey;
 
     let client = Client::new()

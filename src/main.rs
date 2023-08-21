@@ -30,7 +30,7 @@ fn run_tcp_check(configuration: &MonitorConfig) {
         ipv6_flag = tcp::connect(&configuration.ipv6);
     }
     if !ipv4_flag || !ipv6_flag {
-        let alert_flag = settings::handle_failure(configuration);
+        let alert_flag = settings::MonitorResult::handle_failure(configuration);
         if alert_flag {
             let result = email::send_alert_email(ipv4_flag, ipv6_flag, configuration);
             match result {
@@ -41,7 +41,7 @@ fn run_tcp_check(configuration: &MonitorConfig) {
             log::info!("Exiting, there was an error but did not send an alert...")
         }
     } else {
-        settings::handle_success();
+        settings::MonitorResult::handle_success();
         log::info!("Exiting without sending an alert, everything is up!")
     }
 }

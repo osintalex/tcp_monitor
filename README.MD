@@ -26,4 +26,10 @@ how_many_failures_before_send_email = 3
 seconds_between_checks = 3600
 ```
 
-Then hit `cargo run`.
+Then:
+
+```shell
+cargo clippy
+cargo fmt
+cargo run
+```

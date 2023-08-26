@@ -1,20 +1,29 @@
-use log;
 use reqwest::blocking::Client;
 use reqwest::{header, Error, StatusCode};
 use serde_json::{json, Value};
 
 use crate::settings::MonitorConfig;
 
+/// Struct representing user fields for sendgrid payload
 struct User {
     name: String,
     email: String,
 }
 
+/// Struct representing message fields for sendgrid payload
 struct Message {
     subject: String,
     plain: String,
 }
 
+/// Send an alert email using the sendgrid api
+///
+/// # Arguments
+///
+/// * `ipv4_flag` - whether IPv4 check succeeded or not
+/// * `ipv6_flag` - whether IPv6 check succeeded or not
+/// * `configuration` - struct representing monitor configuration
+///
 pub fn send_alert_email(
     ipv4_flag: bool,
     ipv6_flag: bool,
@@ -49,6 +58,14 @@ pub fn send_alert_email(
     Ok(())
 }
 
+/// Generate a JSON payload for the sengrid api
+///
+/// # Arguments
+///
+/// * `ipv4_flag` - whether IPv4 check succeeded or not
+/// * `ipv6_flag` - whether IPv6 check succeeded or not
+/// * `configuration` - struct representing monitor configuration
+///
 fn make_email_payload(configuration: &MonitorConfig, ipv4_flag: bool, ipv6_flag: bool) -> Value {
     // first get all the data to put into the email
     let sender = User {
@@ -78,7 +95,7 @@ fn make_email_payload(configuration: &MonitorConfig, ipv4_flag: bool, ipv6_flag:
     };
     let message: Message = Message {
         subject: String::from(subject),
-        plain: plain,
+        plain,
     };
 
     // now convert all that data into a sendgrid api payload
@@ -107,5 +124,5 @@ fn make_email_payload(configuration: &MonitorConfig, ipv4_flag: bool, ipv6_flag:
             ]
         }
     );
-    return payload;
+    payload
 }

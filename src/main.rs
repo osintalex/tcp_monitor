@@ -1,4 +1,3 @@
-use log;
 use simple_logger::SimpleLogger;
 use std::{thread, time};
 
@@ -8,9 +7,10 @@ mod tcp;
 
 use crate::settings::MonitorConfig;
 
+/// Application entrypoint
 fn main() {
     SimpleLogger::new().init().unwrap();
-    let configuration: MonitorConfig = settings::MonitorConfig::init();
+    let configuration: MonitorConfig = settings::MonitorConfig::new();
     let time_between_checks = time::Duration::from_secs(configuration.seconds_between_checks);
     loop {
         log::info!("Running TCP check...");
@@ -23,6 +23,14 @@ fn main() {
     }
 }
 
+/// Check for IPv4 and IPv6 connectivity with different flags
+/// for how the check works defined in settings.toml
+///
+/// # Arguments
+///
+/// * `configuration` - Struct representing all the configuration values for
+/// the application
+///
 fn run_tcp_check(configuration: &MonitorConfig) {
     let ipv4_flag: bool = tcp::connect(&configuration.ipv4);
     let mut ipv6_flag: bool = true;

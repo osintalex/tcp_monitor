@@ -9,6 +9,7 @@ const RESULTS_FILEPATH: &str = "src/settings/monitor_results.yml";
 
 #[derive(Debug, Deserialize)]
 pub struct MonitorConfig {
+    pub email_enabled: bool,
     pub ipv4: String,
     pub ipv6: String,
     pub ipv6_enabled: bool,
@@ -55,10 +56,10 @@ impl MonitorResult {
     }
 
     pub fn handle_success() {
-        let mut results_yaml = MonitorResult::read_results_yaml();
+        let mut results_yaml = Self::read_results_yaml();
         results_yaml.failed = false;
         results_yaml.count = 0;
-        MonitorResult::write_results_yaml(&results_yaml);
+        Self::write_results_yaml(&results_yaml);
     }
 
     fn read_results_yaml() -> MonitorResult {
